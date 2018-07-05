@@ -7,8 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 
@@ -28,10 +32,13 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private List<Beer> beerList = new ArrayList<>();
+    private BeersAdapter beersAdapter;
+
     private RecyclerView recyclerView;
     private ImageView progress;
     private EditText search;
-    private BeersAdapter beersAdapter;
+    private LinearLayout sort;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         progress = findViewById(R.id.progress);
         search = findViewById(R.id.search);
+        sort = findViewById(R.id.sort);
+        spinner = findViewById(R.id.spinner);
 
         Glide.with(this).asGif().load(R.drawable.beer).into(progress);
 
@@ -50,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(beersAdapter);
 
         fetchBeerData();
+        setupSort();
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,6 +74,27 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void setupSort() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.sort_types,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                beersAdapter.sort(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }
@@ -107,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                             beersAdapter.notifyDataSetChanged();
                             progress.setVisibility(View.INVISIBLE);
                             recyclerView.setVisibility(View.VISIBLE);
+                            sort.setVisibility(View.VISIBLE);
                             search.setVisibility(View.VISIBLE);
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.shrreya.beercraft;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.MyViewHolder> implements Filterable{
@@ -88,5 +90,38 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.MyViewHolder
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public void sort(int sortType) {
+        switch(sortType) {
+            case 0: beersListFiltered = beersList;
+                break;
+            case 1: Collections.sort(beersListFiltered,  (b1, b2) -> b1.getName().compareTo(b2.getName()));
+                break;
+            case 2: Collections.sort(beersListFiltered, (b1, b2) -> {
+                double abv1 = b1.getAbv().equals("") ? 0.0 : Double.parseDouble(b1.getAbv());
+                double abv2 = b2.getAbv().equals("") ? 0.0 : Double.parseDouble(b2.getAbv());
+                if (abv1 < abv2) {
+                    return 1;
+                } else if (abv1 > abv2) {
+                    return -1;
+                } else {
+                    return 0;
+                }});
+                break;
+            case 3: Collections.sort(beersListFiltered, (b1, b2) -> {
+                double abv1 = b1.getAbv().equals("") ? 1.0 : Double.parseDouble(b1.getAbv());
+                double abv2 = b2.getAbv().equals("") ? 1.0 : Double.parseDouble(b2.getAbv());
+                if (abv1 > abv2) {
+                    return 1;
+                } else if (abv1 < abv2) {
+                    return -1;
+                } else {
+                    return 0;
+                }});
+                break;
+            default: break;
+        }
+        notifyDataSetChanged();
     }
 }
