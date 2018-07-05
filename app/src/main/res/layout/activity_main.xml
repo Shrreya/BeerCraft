@@ -16,6 +16,33 @@
         android:padding="5dp"
         android:cursorVisible="false"
         android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:text="@string/sort_msg" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     
     <ImageView
         android:id="@+id/progress"
@@ -27,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/search"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/sort" />
 
 </android.support.constraint.ConstraintLayout>

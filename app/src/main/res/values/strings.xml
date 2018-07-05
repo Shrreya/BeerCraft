@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Beer Craft</string>
     <string name="search_hint">Search Beers by Name or Style</string>
+    <string name="sort_msg">Sort by</string>
+    <string-array name="sort_types">
+        <item>Default</item>
+        <item>Name</item>
+        <item>High ABV</item>
+        <item>Low ABV</item>
+    </string-array>
 </resources>
