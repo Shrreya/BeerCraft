@@ -1,8 +1,8 @@
 # BeerCraft
 
-Android App to search & browse crafted beers </br>
+A coding challenge on [HackerEarth](https://www.hackerearth.com/challenges/) : Android App to search & browse crafted beers </br>
 
-## Features Implemented
+## Features Implemented During Challenge
 * Beer data fetched using [OkHttp](https://github.com/square/okhttp)
 * Data displayed in a list using RecyclerView.
 * Each beer item in the list shows name, style and alcoholic content by volume.
@@ -12,3 +12,10 @@ Android App to search & browse crafted beers </br>
 * App works in both portrait & landscape modes.
 
 <img src="https://github.com/Shrreya/BeerCraft/blob/master/screenshots/1.png" width="216" height="384" /> <img src="https://github.com/Shrreya/BeerCraft/blob/master/screenshots/2.png" width="216" height="384" /> <img src="https://github.com/Shrreya/BeerCraft/blob/master/screenshots/3.png" width="216" height="384" />
+
+## Features Implemented After Challenge
+* Sort the list of beers by name and low or high alcoholic content by volume.
+* Used Java 8 and lambda expressions in code.
+
+<img src="https://github.com/Shrreya/BeerCraft/blob/master/screenshots/4.png" width="216" height="384" /> <img src="https://github.com/Shrreya/BeerCraft/blob/master/screenshots/5.png" width="216" height="384" /> </br>
+<img src="https://github.com/Shrreya/BeerCraft/blob/master/screenshots/6.png" width="216" height="384" /> <img src="https://github.com/Shrreya/BeerCraft/blob/master/screenshots/7.png" width="216" height="384" />
