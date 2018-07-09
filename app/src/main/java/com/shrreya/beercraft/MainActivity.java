@@ -32,6 +32,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private List<Beer> beersList = new ArrayList<>();
+    private List<Beer> defaultBeersList = new ArrayList<>();
     private BeersAdapter beersAdapter;
 
     private RecyclerView recyclerView;
@@ -58,24 +59,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(beersAdapter);
 
-        fetchBeerData();
         setupSort();
-
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                beersAdapter.getFilter().filter(s);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+        setupSearch();
     }
 
     private void setupSort() {
@@ -89,12 +74,40 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                beersAdapter.sort(position);
+                if(position == 0) {
+                    if (beersList.size() > 0) {
+                        beersList.clear();
+                        beersList.addAll(defaultBeersList);
+                        beersAdapter.notifyDataSetChanged();
+                    } else {
+                        fetchBeerData();
+                    }
+                } else {
+                    beersAdapter.sort(position);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+    }
+
+    private void setupSearch() {
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                beersAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
     }
@@ -135,18 +148,23 @@ public class MainActivity extends AppCompatActivity {
                                 Beer beer = new Beer(abv, ibu, id, name, style, ounces);
                                 beersList.add(beer);
                             }
+                            
+                            defaultBeersList.addAll(beersList);
                             beersAdapter.notifyDataSetChanged();
-                            progress.setVisibility(View.INVISIBLE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            sort.setVisibility(View.VISIBLE);
-                            search.setVisibility(View.VISIBLE);
+                            setupViews();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 });
-
             }
         });
+    }
+
+    private void setupViews() {
+        progress.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        sort.setVisibility(View.VISIBLE);
+        search.setVisibility(View.VISIBLE);
     }
 }

@@ -1,7 +1,6 @@
 package com.shrreya.beercraft;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,10 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.MyViewHolder
     private List<Beer> beersList;
     private List<Beer> beersListFiltered;
 
+    private final int SORT_NAME = 1;
+    private final int SORT_LOW_ABV = 2;
+    private final int SORT_HIGH_ABV = 3;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name, style, abv;
 
@@ -29,7 +32,6 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.MyViewHolder
         }
     }
 
-
     public BeersAdapter(List<Beer> beersList) {
         this.beersList = beersList;
         this.beersListFiltered = beersList;
@@ -39,7 +41,6 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.MyViewHolder
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.beer_list_item, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
@@ -69,13 +70,11 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.MyViewHolder
                 } else {
                     List<Beer> filteredList = new ArrayList<>();
                     for (Beer beer : beersList) {
-
                         if (beer.getName().toLowerCase().contains(query.toLowerCase()) ||
                                 beer.getStyle().contains(query)) {
                             filteredList.add(beer);
                         }
                     }
-
                     beersListFiltered = filteredList;
                 }
 
@@ -94,33 +93,35 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersAdapter.MyViewHolder
 
     public void sort(int sortType) {
         switch(sortType) {
-            case 0: beersListFiltered = beersList;
+            case SORT_NAME:
+                Collections.sort(beersListFiltered,  (b1, b2) -> b1.getName().compareTo(b2.getName()));
                 break;
-            case 1: Collections.sort(beersListFiltered,  (b1, b2) -> b1.getName().compareTo(b2.getName()));
+            case SORT_LOW_ABV:
+                Collections.sort(beersListFiltered, (b1, b2) -> {
+                    double abv1 = b1.getAbv().equals("") ? 0.0 : Double.parseDouble(b1.getAbv());
+                    double abv2 = b2.getAbv().equals("") ? 0.0 : Double.parseDouble(b2.getAbv());
+                    if (abv1 < abv2) {
+                        return 1;
+                    } else if (abv1 > abv2) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
                 break;
-            case 2: Collections.sort(beersListFiltered, (b1, b2) -> {
-                double abv1 = b1.getAbv().equals("") ? 0.0 : Double.parseDouble(b1.getAbv());
-                double abv2 = b2.getAbv().equals("") ? 0.0 : Double.parseDouble(b2.getAbv());
-                if (abv1 < abv2) {
-                    return 1;
-                } else if (abv1 > abv2) {
-                    return -1;
-                } else {
-                    return 0;
-                }});
+            case SORT_HIGH_ABV:
+                Collections.sort(beersListFiltered, (b1, b2) -> {
+                    double abv1 = b1.getAbv().equals("") ? 1.0 : Double.parseDouble(b1.getAbv());
+                    double abv2 = b2.getAbv().equals("") ? 1.0 : Double.parseDouble(b2.getAbv());
+                    if (abv1 > abv2) {
+                        return 1;
+                    } else if (abv1 < abv2) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
                 break;
-            case 3: Collections.sort(beersListFiltered, (b1, b2) -> {
-                double abv1 = b1.getAbv().equals("") ? 1.0 : Double.parseDouble(b1.getAbv());
-                double abv2 = b2.getAbv().equals("") ? 1.0 : Double.parseDouble(b2.getAbv());
-                if (abv1 > abv2) {
-                    return 1;
-                } else if (abv1 < abv2) {
-                    return -1;
-                } else {
-                    return 0;
-                }});
-                break;
-            default: break;
         }
         notifyDataSetChanged();
     }
