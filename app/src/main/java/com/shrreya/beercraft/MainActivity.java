@@ -31,7 +31,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private List<Beer> beerList = new ArrayList<>();
+    private List<Beer> beersList = new ArrayList<>();
     private BeersAdapter beersAdapter;
 
     private RecyclerView recyclerView;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         Glide.with(this).asGif().load(R.drawable.beer).into(progress);
 
-        beersAdapter = new BeersAdapter(beerList);
+        beersAdapter = new BeersAdapter(beersList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(beersAdapter);
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                                 double ounces = beerObject.getDouble("ounces");
 
                                 Beer beer = new Beer(abv, ibu, id, name, style, ounces);
-                                beerList.add(beer);
+                                beersList.add(beer);
                             }
                             beersAdapter.notifyDataSetChanged();
                             progress.setVisibility(View.INVISIBLE);
